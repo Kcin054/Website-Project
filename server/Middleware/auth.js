@@ -33,3 +33,26 @@ exports.adminCheck = async (req, res, next) => {
     res.send("Admin Access Denied").status(403);
   }
 };
+
+exports.authMiddleware = async (req, res, next) => {
+  try {
+    const token = req.headers["authtoken"];
+
+    if (!token) {
+      return res.status(401).json({ message: "No token provided" });
+    }
+
+    const decoded = jwt.verify(token, "jwtsecret");
+    const user = await User.findById(decoded.user.id);
+    console.log("user", user);
+
+    if (!user) {
+      return res.status(401).json({ message: "Invalid user" });
+    }
+
+    req.user = user; // <--- ข้อมูลผู้ใช้ถูกแนบที่นี่
+    next();
+  } catch (error) {
+    res.status(401).json({ message: "Invalid token" });
+  }
+};

@@ -45,7 +45,7 @@ exports.login = async (req, res) => {
 
       //Payload
       var payload = {
-        user: { name: user.name, role: user.role },
+        user: { id: user.id, name: user.name, role: user.role },
       };
 
       //Genarate token
