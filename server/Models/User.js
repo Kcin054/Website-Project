@@ -22,6 +22,21 @@ const userSchema = mongoose.Schema(
       type: String,
       // default: "-",
     },
+    city: {
+      // เพิ่มฟิลด์เมืองในโมเดลผู้ใช้
+      type: String,
+      // default: "-",
+    },
+    postalCode: {
+      // เพิ่มฟิลด์รหัสไปรษณีย์ในโมเดลผู้ใช้
+      type: String,
+      // default: "-",
+    },
+    phoneNumber: {
+      // เพิ่มฟิลด์เบอร์โทรศัพท์ในโมเดลผู้ใช้ (ถ้า 'tol' ไม่ได้มีไว้สำหรับสิ่งนี้)
+      type: String,
+      // default: "-",
+    },
   },
   { timestamps: true }
 );
