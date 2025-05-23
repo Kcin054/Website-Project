@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
+const Schema = mongoose.Schema;
 
 const orderSchema = new mongoose.Schema(
   {
@@ -7,7 +8,7 @@ const orderSchema = new mongoose.Schema(
       {
         product: {
           type: ObjectId,
-          ref: "Product", // อ้างอิงไปยัง Product Model
+          ref: "books", // อ้างอิงไปยัง Product Model
         },
         quantity: Number,
         price: Number, // ราคา ณ เวลาที่สั่งซื้อ
@@ -27,7 +28,7 @@ const orderSchema = new mongoose.Schema(
       ],
     },
     orderBy: {
-      type: ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "users", // อ้างอิงไปยัง User Model
     },
     shippingAddress: {
