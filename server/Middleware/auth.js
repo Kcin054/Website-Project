@@ -8,7 +8,7 @@ exports.auth = async (req, res, next) => {
     if (!token) {
       return res.send("No token").status(401);
     }
-    const decode = jwt.verify(token, "jwtsecret");
+    const decode = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decode.user;
 
     next();
@@ -44,7 +44,6 @@ exports.authMiddleware = async (req, res, next) => {
 
     const decoded = jwt.verify(token, "jwtsecret");
     const user = await User.findById(decoded.user.id);
-    console.log("user", user);
 
     if (!user) {
       return res.status(401).json({ message: "Invalid user" });

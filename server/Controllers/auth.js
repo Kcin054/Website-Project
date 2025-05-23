@@ -49,10 +49,15 @@ exports.login = async (req, res) => {
       };
 
       //Genarate token
-      jwt.sign(payload, "jwtsecret", { expiresIn: "1d" }, (err, token) => {
-        if (err) throw err;
-        res.json({ token, payload });
-      });
+      jwt.sign(
+        payload,
+        process.env.JWT_SECRET,
+        { expiresIn: "1d" },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token, payload });
+        }
+      );
     } else {
       return res.send("User not found!!!").status(400);
     }

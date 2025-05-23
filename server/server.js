@@ -1,9 +1,13 @@
+require("dotenv").config();
+
 const express = require("express");
 const { readdirSync } = require("fs");
 // const bookRouters = require('./Routes/book')
+const mongoose = require("mongoose");
 const morgan = require("morgan");
 const cors = require("cors");
 const bodyParse = require("body-parser");
+mongoose.set("strictPopulate", false); // <-- เพิ่มบรรทัดนี้
 
 const connectDB = require("./Config/db");
 

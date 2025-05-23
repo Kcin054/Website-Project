@@ -20,6 +20,10 @@ const bookSchema = mongoose.Schema(
     category: {
       type: String,
     },
+    averageRating: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

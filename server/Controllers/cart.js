@@ -4,7 +4,6 @@ const Book = require("../Models/Book");
 exports.getCart = async (req, res) => {
   try {
     const userId = req.user ? req.user._id : null;
-    console.log("userId", req.uses);
 
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
