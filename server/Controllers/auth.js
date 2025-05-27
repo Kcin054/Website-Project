@@ -5,7 +5,8 @@ const jwt = require("jsonwebtoken");
 exports.register = async (req, res) => {
   try {
     //CheckUser
-    const { name, password, tol, email } = req.body;
+    const { name, password, phoneNumber, email, address, city, postalCode } =
+      req.body;
 
     var user = await User.findOne({ name });
     if (user) {
@@ -17,8 +18,11 @@ exports.register = async (req, res) => {
     user = new User({
       name,
       password,
-      tol,
+      phoneNumber,
       email,
+      address,
+      city,
+      postalCode,
     });
 
     user.password = await bcrypt.hash(password, salt);
@@ -45,7 +49,11 @@ exports.login = async (req, res) => {
 
       //Payload
       var payload = {
-        user: { id: user.id, name: user.name, role: user.role },
+        user: {
+          id: user.id,
+          name: user.name,
+          role: user.role,
+        },
       };
 
       //Genarate token
