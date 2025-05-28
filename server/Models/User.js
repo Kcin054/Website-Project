@@ -23,12 +23,10 @@ const userSchema = mongoose.Schema(
       // default: "-",
     },
     city: {
-      // เพิ่มฟิลด์เมืองในโมเดลผู้ใช้
       type: String,
       // default: "-",
     },
     postalCode: {
-      // เพิ่มฟิลด์รหัสไปรษณีย์ในโมเดลผู้ใช้
       type: String,
       // default: "-",
     },

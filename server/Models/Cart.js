@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const CartItemSchema = new Schema({
   productId: {
     type: Schema.Types.ObjectId,
-    ref: "books", // อ้างอิงไปยัง Model สินค้า
+    ref: "books",
     required: true,
   },
   quantity: {
@@ -18,16 +18,15 @@ const CartItemSchema = new Schema({
   },
   name: String,
   image: String,
-  // สามารถเพิ่ม fields อื่นๆ ที่เกี่ยวข้องกับ item ในตะกร้าได้
 });
 
 const CartSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
-    ref: "users", // อ้างอิงไปยัง Model ผู้ใช้ (สำหรับผู้ใช้ที่ลงทะเบียน)
+    ref: "users",
   },
-  sessionId: String, // สำหรับผู้ใช้ทั่วไป (อาจใช้ session ID)
-  items: [CartItemSchema], // Array ของสินค้าในตะกร้า
+  sessionId: String,
+  items: [CartItemSchema],
   totalQuantity: {
     type: Number,
     default: 0,
@@ -46,7 +45,6 @@ const CartSchema = new Schema({
   },
 });
 
-// Middleware เพื่ออัปเดต totalQuantity และ subtotal ก่อนบันทึก
 CartSchema.pre("save", function (next) {
   this.totalQuantity = this.items.reduce((sum, item) => sum + item.quantity, 0);
   this.subtotal = this.items.reduce(

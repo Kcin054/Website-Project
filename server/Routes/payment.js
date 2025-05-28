@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const paymentController = require("../Controllers/payment"); // นำเข้า Controller สำหรับการจัดการการชำระเงิน
-const { auth, authMiddleware } = require("../Middleware/auth"); // สมมติว่ามีการยืนยันตัวตน
+const paymentController = require("../Controllers/payment");
+const { auth, authMiddleware } = require("../Middleware/auth");
 const { uploadSlip } = require("../Middleware/uploadSlip");
 const { confirmPayment } = require("../Controllers/user");
 

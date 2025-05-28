@@ -21,7 +21,7 @@ app.use(cors());
 app.use(bodyParse.json({ limit: "10mb" }));
 app.use("/img", express.static("uploads/images")); // สำหรับรูปภาพปกหนังสือ
 app.use("/pdfs", express.static(path.join(__dirname, "uploads", "pdfs")));
-app.use("/slip", express.static(path.join(__dirname, "uploads", "slips")));
+app.use("/slips", express.static(path.join(__dirname, "uploads", "slips")));
 
 // app.use('/api', bookRouters)
 

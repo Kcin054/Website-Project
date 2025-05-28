@@ -1,16 +1,15 @@
-// Models/Review.js
 const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Schema; // สำหรับอ้างอิงถึง User และ Book
+const { ObjectId } = mongoose.Schema;
 
 const reviewSchema = new mongoose.Schema({
   product: {
     type: ObjectId,
-    ref: "Book", // อ้างอิงถึง Book Model
+    ref: "Book",
     required: true,
   },
   user: {
     type: ObjectId,
-    ref: "users", // อ้างอิงถึง User Model
+    ref: "users",
     required: true,
   },
   rating: {
@@ -22,7 +21,7 @@ const reviewSchema = new mongoose.Schema({
   comment: {
     type: String,
     trim: true,
-    maxlength: 500, // ความยาวสูงสุดของรีวิว
+    maxlength: 500,
   },
   createdAt: {
     type: Date,
