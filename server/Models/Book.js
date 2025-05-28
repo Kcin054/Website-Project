@@ -31,6 +31,8 @@ const bookSchema = mongoose.Schema(
       default: 0, // ตั้งค่าเริ่มต้นเป็น 0
       min: 0, // จำนวน stock ต้องไม่ติดลบ
     },
+    isEbook: { type: Boolean, default: false },
+    pdfFile: { type: String },
   },
   { timestamps: true }
 );

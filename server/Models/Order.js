@@ -30,19 +30,29 @@ const orderSchema = new mongoose.Schema(
           type: String,
           default: "noimage.jpg", // ตั้งค่า default ถ้าไม่มี
         },
+        isEbook: {
+          // เพื่อระบุว่าเป็น E-book หรือไม่
+          type: Boolean,
+          default: false,
+        },
+        pdfFile: {
+          // สำหรับชื่อไฟล์ PDF
+          type: String,
+          // ไม่จำเป็นต้อง required ถ้าไม่ใช่ทุกสินค้าเป็น E-book
+        },
       },
     ],
     paymentIntent: {}, // ข้อมูลการชำระเงินจาก Payment Gateway
     orderStatus: {
       type: String,
-      default: "Not Processed",
+      default: "ยังไม่ดำเนินการ",
       enum: [
-        "Not Processed",
-        "Cash On Delivery",
-        "Processing",
-        "Dispatched",
-        "Cancelled",
-        "Completed",
+        "ยังไม่ดำเนินการ",
+        "ตรวจสอบการชำระเงิน",
+        "กำลังดำเนินการ",
+        "จัดส่งแล้ว",
+        "ยกเลิกแล้ว",
+        "เสร็จสมบูรณ์",
       ],
     },
     orderBy: {
@@ -57,6 +67,7 @@ const orderSchema = new mongoose.Schema(
       phoneNumber: String,
     },
     totalAmount: Number,
+    slipFile: String,
   },
   { timestamps: true }
 );

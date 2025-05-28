@@ -54,6 +54,8 @@ exports.createOrder = async (req, res) => {
       console.log("Product fetched from DB:", product);
       console.log("Product Name (from DB):", product?.name);
       console.log("Product File (from DB):", product?.file);
+      console.log("Product isEbook (from DB):", product?.isEbook);
+      console.log("Product pdfFile (from DB):", product?.pdfFile);
 
       if (!product) {
         // ถ้าไม่พบสินค้า ให้แจ้งเตือนและยกเลิก
@@ -77,6 +79,8 @@ exports.createOrder = async (req, res) => {
         price: product.price,
         quantity: item.quantity,
         file: product.file,
+        isEbook: product.isEbook || false, // <--- เพิ่ม Field นี้
+        pdfFile: product.pdfFile || null, // <--- เพิ่ม Field นี้
       });
     }
 
@@ -125,11 +129,7 @@ exports.getUserOrders = async (req, res) => {
   try {
     const userId = req.user._id;
     const orders = await Order.find({ orderBy: userId })
-      .populate({
-        path: "products.product",
-        model: "books",
-        select: "_id name price file category type",
-      })
+      .populate("products.product")
       .sort({ createdAt: -1 })
       .exec();
 
@@ -145,11 +145,7 @@ exports.getOrderByOrderId = async (req, res) => {
     const { orderId } = req.params;
 
     const order = await Order.findById(orderId)
-      .populate({
-        path: "products.product",
-        model: "books",
-        select: "_id name price file category type",
-      })
+      .populate("products.product")
       .populate("orderBy", "name email")
       .exec();
 
@@ -179,12 +175,12 @@ exports.updateOrderStatus = async (req, res) => {
 
     if (
       ![
-        "Not Processed",
-        "Cash On Delivery",
-        "Processing",
-        "Dispatched",
-        "Cancelled",
-        "Completed",
+        "ยังไม่ดำเนินการ",
+        "ตรวจสอบการชำระเงิน",
+        "กำลังดำเนินการ",
+        "จัดส่งแล้ว",
+        "ยกเลิกแล้ว",
+        "เสร็จสมบูรณ์",
       ].includes(status)
     ) {
       return res.status(400).json({ msg: "Invalid order status" });

@@ -11,12 +11,8 @@ const {
   updateProfile,
   changePassword,
   deleteAccount,
+  listUsers,
 } = require("../Controllers/user");
-
-console.log("getUserProfile in routes/user.js:", getUserProfile);
-console.log("updateProfile in routes/user.js:", updateProfile);
-console.log("changePassword in routes/user.js:", changePassword);
-console.log("deleteAccount in routes/user.js:", deleteAccount);
 
 // Route สำหรับดึงข้อมูลโปรไฟล์
 router.get("/user/:userId", auth, getUserProfile);
@@ -30,5 +26,7 @@ router.put("/user/:userId", auth, updateProfile);
 // Route สำหรับลบบัญชี
 // ควรระวังการลบบัญชีอย่างมาก อาจมี middleware ตรวจสอบสิทธิ์ที่เข้มงวดกว่าเดิม
 router.delete("/user/:userId", auth, deleteAccount);
+
+router.get("/admin/users", auth, adminCheck, listUsers);
 
 module.exports = router;

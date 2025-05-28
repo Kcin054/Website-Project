@@ -1,6 +1,7 @@
 // backend/controllers/user.js
 const User = require("../Models/User"); // ตรวจสอบ path ของ User Model ของคุณ
 const bcrypt = require("bcryptjs"); // สำหรับเข้ารหัส/เปรียบเทียบรหัสผ่าน
+const Order = require("../Models/Order");
 
 // ==============================================================
 // 1. getUserProfile: ดึงข้อมูลโปรไฟล์ผู้ใช้
@@ -144,4 +145,75 @@ exports.deleteAccount = async (req, res) => {
   }
 };
 
-console.log("Exports from controllers/user.js:", Object.keys(exports));
+// backend/Controllers/user.js1
+
+// ... (existing functions)
+
+// ฟังก์ชันใหม่สำหรับ Admin: ดึงข้อมูลผู้ใช้ทั้งหมด พร้อมรองรับการค้นหา
+exports.listUsers = async (req, res) => {
+  try {
+    // รับ searchTerm จาก query parameters (เช่น /admin/users?search=keyword)
+    const { search } = req.query;
+    let query = {}; // Object สำหรับ Mongoose query
+
+    if (search) {
+      // ถ้ามี searchTerm ให้สร้างเงื่อนไขการค้นหา
+      // ค้นหาจาก field 'name' หรือ 'email' หรือ 'role' หรือ 'phoneNumber'
+      // ใช้ $regex เพื่อค้นหาแบบ Partial match และ $options: 'i' เพื่อไม่สนใจ case (case-insensitive)
+      query = {
+        $or: [
+          { name: { $regex: search, $options: "i" } },
+          { email: { $regex: search, $options: "i" } },
+          { role: { $regex: search, $options: "i" } },
+          { phoneNumber: { $regex: search, $options: "i" } },
+          // คุณสามารถเพิ่ม field อื่นๆ ที่ต้องการให้ค้นหาได้
+        ],
+      };
+    }
+
+    const users = await User.find(query).select("-password").exec();
+    res.json(users);
+  } catch (error) {
+    console.error("Error in listUsers:", error);
+    res.status(500).json({ message: "เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้" });
+  }
+};
+
+exports.confirmPayment = async (req, res) => {
+  try {
+    const { orderId } = req.body; // รับ orderId จาก body
+    const slipFile = req.file; // รับไฟล์สลิปจาก Multer (req.file)
+
+    if (!orderId) {
+      return res.status(400).json({ message: "Order ID is required." });
+    }
+    if (!slipFile) {
+      return res.status(400).json({ message: "Payment slip is required." });
+    }
+
+    // ค้นหา Order ในฐานข้อมูล
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found." });
+    }
+
+    // บันทึกชื่อไฟล์สลิปลงใน Order
+    // คุณต้องมี field สำหรับเก็บ slip ใน Order Model ของคุณ (เช่น `slipImage: String`)
+    order.slipImage = slipFile.filename; // เก็บชื่อไฟล์ (Multer ตั้งให้)
+    order.paymentStatus = "Pending Admin Confirmation"; // เปลี่ยนสถานะ
+    // คุณอาจจะเพิ่มข้อมูล timestamp สำหรับการยืนยันสลิปด้วยก็ได้
+
+    await order.save();
+
+    res.status(200).json({
+      message: "Payment slip uploaded successfully. Order status updated.",
+      order: order,
+    });
+  } catch (error) {
+    console.error("Error confirming payment:", error);
+    res
+      .status(500)
+      .json({ message: "Failed to confirm payment.", error: error.message });
+  }
+};
