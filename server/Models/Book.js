@@ -2,7 +2,10 @@ const mongoose = require("mongoose");
 
 const bookSchema = mongoose.Schema(
   {
-    name: String,
+    name: {
+      type: String,
+      required: true,
+    },
     tag: {
       type: String,
       required: true,
@@ -27,9 +30,9 @@ const bookSchema = mongoose.Schema(
     },
     stock: {
       type: Number,
-      required: true, // ทำให้ stock เป็นฟิลด์ที่จำเป็นต้องมี
-      default: 0, // ตั้งค่าเริ่มต้นเป็น 0
-      min: 0, // จำนวน stock ต้องไม่ติดลบ
+      required: true,
+      default: 0,
+      min: 0,
     },
     isEbook: { type: Boolean, default: false },
     pdfFile: { type: String },

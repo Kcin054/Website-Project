@@ -4,16 +4,21 @@ const jwt = require("jsonwebtoken");
 
 exports.register = async (req, res) => {
   try {
-    //CheckUser
-    const { name, password, phoneNumber, email, address, city, postalCode } =
-      req.body;
+    const {
+      name,
+      password,
+      phoneNumber,
+      email,
+      address,
+      province,
+      postalCode,
+    } = req.body;
 
     var user = await User.findOne({ name });
     if (user) {
       return res.send("User Already!!!").status(400);
     }
 
-    //Encrypt(เข้ารหัส password)
     const salt = await bcrypt.genSalt(10);
     user = new User({
       name,
@@ -21,7 +26,7 @@ exports.register = async (req, res) => {
       phoneNumber,
       email,
       address,
-      city,
+      province,
       postalCode,
     });
 
@@ -38,16 +43,14 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    //Check User
     const { name, password } = req.body;
     var user = await User.findOneAndUpdate({ name }, { new: true });
     if (user) {
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-        return res.send("Password Invalid!!!").status(400);
+        return res.send("รหัสผ่านผิด").status(400);
       }
 
-      //Payload
       var payload = {
         user: {
           id: user.id,
@@ -56,7 +59,6 @@ exports.login = async (req, res) => {
         },
       };
 
-      //Genarate token
       jwt.sign(
         payload,
         process.env.JWT_SECRET,
@@ -69,8 +71,6 @@ exports.login = async (req, res) => {
     } else {
       return res.send("User not found!!!").status(400);
     }
-
-    // res.send('Hello login Controller')
   } catch (err) {
     console.log(err);
     res.status(500).send("Server Error");

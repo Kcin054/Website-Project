@@ -2,9 +2,13 @@ const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema(
   {
-    name: String,
+    name: {
+      type: String,
+      required: true,
+    },
     password: {
       type: String,
+      required: true,
     },
     role: {
       type: String,
@@ -12,23 +16,42 @@ const userSchema = mongoose.Schema(
     },
     phoneNumber: {
       type: String,
-      // default: "-",
+      required: true,
+      minlength: 10,
+      maxlength: 10,
+      validate: {
+        validator: function (v) {
+          return /^\d{10}$/.test(v);
+        },
+        message: (props) =>
+          `เบอร์โทรศัพท์ ${props.value} ไม่ถูกต้อง! ต้องเป็นตัวเลข 10 หลัก`,
+      },
     },
     email: {
       type: String,
-      // default: "-",
+      required: true,
+      unique: true,
     },
     address: {
       type: String,
-      // default: "-",
+      required: true,
     },
-    city: {
+    province: {
       type: String,
-      // default: "-",
+      required: true,
     },
     postalCode: {
       type: String,
-      // default: "-",
+      required: true,
+      minlength: 5,
+      maxlength: 5,
+      validate: {
+        validator: function (v) {
+          return /^\d{5}$/.test(v);
+        },
+        message: (props) =>
+          `รหัสไปรษณีย์ ${props.value} ไม่ถูกต้อง! ต้องเป็นตัวเลข 5 หลัก`,
+      },
     },
   },
   { timestamps: true }

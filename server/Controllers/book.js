@@ -1,6 +1,6 @@
 const Book = require("../Models/Book");
-const fs = require("fs"); // เพิ่มบรรทัดนี้
-const path = require("path"); // เพิ่มบรรทัดนี้
+const fs = require("fs");
+const path = require("path");
 
 exports.read = async (req, res) => {
   try {
@@ -23,48 +23,29 @@ exports.list = async (req, res) => {
   }
 };
 
-// exports.create = async (req, res) => {
-//   try {
-//     var data = req.body;
-//     if (req.file) {
-//       data.file = req.file.filename;
-//     }
-//     const booked = await Book(data).save();
-//     res.send(booked);
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).send("Server Error");
-//   }
-// };
-
 exports.create = async (req, res) => {
   try {
-    // ตรวจสอบว่ามีการอัปโหลดไฟล์รูปภาพปกหรือไม่
     let imageFileName = "noimage.jpg";
     if (req.files && req.files.file && req.files.file.length > 0) {
       imageFileName = req.files.file[0].filename;
     }
 
-    // ตรวจสอบว่ามีการอัปโหลดไฟล์ PDF (สำหรับ E-book) หรือไม่
-    let pdfFileName = null; // กำหนดค่าเริ่มต้นเป็น null
+    let pdfFileName = null;
     if (req.files && req.files.pdfFile && req.files.pdfFile.length > 0) {
-      pdfFileName = req.files.pdfFile[0].filename; // ดึงชื่อไฟล์ PDF จริงที่ Multer สร้างขึ้น
+      pdfFileName = req.files.pdfFile[0].filename;
     }
 
-    // สร้างข้อมูลหนังสือใหม่
     const newBook = new Book({
-      ...req.body, // ข้อมูลอื่นๆ จากฟอร์ม (รวมถึง isEbook จาก req.body)
-      file: imageFileName, // ชื่อไฟล์ภาพปก
-      pdfFile: pdfFileName, // <--- UNCOMMENT และใช้ตัวแปร pdfFileName ที่สร้างขึ้น
+      ...req.body,
+      file: imageFileName,
+      pdfFile: pdfFileName,
     });
 
     await newBook.save();
     res.status(201).json(newBook);
   } catch (error) {
     console.error("Error creating book:", error);
-    // อย่าลืมลบไฟล์ที่อัปโหลดไปแล้วถ้ามีข้อผิดพลาดในการบันทึกลง DB
     if (req.files && req.files.file && req.files.file.length > 0) {
-      // ตรวจสอบให้แน่ใจว่าได้ import 'fs' และ 'path' ที่ด้านบนของไฟล์ Controller นี้
       const fs = require("fs");
       const path = require("path");
       fs.unlink(
@@ -94,20 +75,17 @@ exports.create = async (req, res) => {
 exports.update = async (req, res) => {
   try {
     const id = req.params.id;
-    let newData = { ...req.body }; // สร้างสำเนาของ req.body
+    let newData = { ...req.body };
 
-    // ดึงข้อมูลหนังสือเดิมก่อน เพื่อเอาชื่อไฟล์เก่ามาลบ
     const oldBook = await Book.findById(id).exec();
     if (!oldBook) {
       return res.status(404).json({ message: "ไม่พบหนังสือที่ต้องการอัปเดต" });
     }
 
-    // --- จัดการไฟล์รูปภาพปก (fieldname: "file") ---
     if (req.files && req.files.file && req.files.file.length > 0) {
       const newImageFileName = req.files.file[0].filename;
-      newData.file = newImageFileName; // อัปเดตชื่อไฟล์รูปภาพใหม่ใน newData
+      newData.file = newImageFileName;
 
-      // ลบไฟล์รูปภาพเก่า ถ้ามีและไม่ใช่ noimage.jpg
       if (oldBook.file && oldBook.file !== "noimage.jpg") {
         const oldImagePath = path.join(
           __dirname,
@@ -126,7 +104,6 @@ exports.update = async (req, res) => {
       req.body.file === "noimage.jpg" &&
       oldBook.file !== "noimage.jpg"
     ) {
-      // กรณีที่ Frontend ส่งมาว่าไม่มีรูปภาพปก และของเดิมมี
       const oldImagePath = path.join(
         __dirname,
         "../uploads/images",
@@ -144,17 +121,14 @@ exports.update = async (req, res) => {
             oldBook.file
           );
       });
-      newData.file = "noimage.jpg"; // ตั้งค่ากลับเป็น noimage.jpg
+      newData.file = "noimage.jpg";
     }
 
-    // --- จัดการไฟล์ PDF (fieldname: "pdfFile") ---
     if (req.files && req.files.pdfFile && req.files.pdfFile.length > 0) {
       const newPdfFileName = req.files.pdfFile[0].filename;
-      newData.pdfFile = newPdfFileName; // อัปเดตชื่อไฟล์ PDF ใหม่ใน newData
+      newData.pdfFile = newPdfFileName;
 
-      // ลบไฟล์ PDF เก่า ถ้ามี
       if (oldBook.pdfFile) {
-        // ตรวจสอบว่ามี pdfFile ใน DB หรือไม่
         const oldPdfPath = path.join(
           __dirname,
           "../uploads/pdfs",
@@ -169,7 +143,6 @@ exports.update = async (req, res) => {
         });
       }
     } else if (req.body.pdfFile === "" && oldBook.pdfFile) {
-      // กรณีที่ Frontend ส่งมาว่าไม่มีไฟล์ PDF และของเดิมมี
       const oldPdfPath = path.join(
         __dirname,
         "../uploads/pdfs",
@@ -184,17 +157,16 @@ exports.update = async (req, res) => {
             oldBook.pdfFile
           );
       });
-      newData.pdfFile = ""; // ตั้งค่ากลับเป็นค่าว่าง
+      newData.pdfFile = "";
     }
 
     const updated = await Book.findOneAndUpdate({ _id: id }, newData, {
-      new: true, // คืนค่า Document ที่อัปเดตแล้ว
+      new: true,
     }).exec();
 
     res.send(updated);
   } catch (err) {
-    console.error("Error updating book:", err); // เปลี่ยน console.log เป็น console.error เพื่อให้เห็นชัดเจน
-    // ลบไฟล์ที่อัปโหลดใหม่ไปแล้วหากเกิดข้อผิดพลาดในการบันทึกลง DB
+    console.error("Error updating book:", err);
     if (req.files && req.files.file && req.files.file.length > 0) {
       fs.unlink(
         path.join(__dirname, "../uploads/images", req.files.file[0].filename),
@@ -219,7 +191,7 @@ exports.update = async (req, res) => {
         }
       );
     }
-    res.status(500).send("Server Error: " + err.message); // ส่ง error message กลับไปให้ Frontend เห็นด้วย
+    res.status(500).send("Server Error: " + err.message);
   }
 };
 

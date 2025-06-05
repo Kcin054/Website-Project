@@ -38,11 +38,11 @@ const orderSchema = new mongoose.Schema(
     paymentIntent: {},
     orderStatus: {
       type: String,
-      default: "ยังไม่ดำเนินการ",
+      default: "รอตรวจสอบการชำระเงิน",
       enum: [
-        "ยังไม่ดำเนินการ",
-        "ตรวจสอบการชำระเงิน",
-        "กำลังดำเนินการ",
+        "รอตรวจสอบการชำระเงิน",
+        "ตรวจสอบการชำระเงินแล้ว",
+        "กำลังดำเนินการจัดส่ง",
         "จัดส่งแล้ว",
         "ยกเลิกแล้ว",
         "เสร็จสมบูรณ์",
@@ -55,7 +55,7 @@ const orderSchema = new mongoose.Schema(
     },
     shippingAddress: {
       address: String,
-      city: String,
+      province: String,
       postalCode: String,
       phoneNumber: String,
     },

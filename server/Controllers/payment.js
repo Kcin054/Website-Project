@@ -1,7 +1,7 @@
 exports.processPayment = async (req, res) => {
   try {
     const { paymentMethod, amount, currency, orderId } = req.body;
-    const userId = req.user._id; // สมมติว่ามีการยืนยันตัวตนแล้ว
+    const userId = req.user._id;
 
     console.log("กำลังประมวลผลการชำระเงินสำหรับผู้ใช้:", userId);
     console.log("วิธีการชำระเงิน:", paymentMethod);

@@ -34,11 +34,11 @@ exports.updateProfile = async (req, res) => {
         .json({ message: "ไม่อนุญาตให้อัปเดตข้อมูลโปรไฟล์นี้" });
     }
 
-    const { name, phoneNumber, address, city, postalCode } = req.body;
+    const { name, phoneNumber, address, province, postalCode } = req.body;
 
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { name, phoneNumber, address, city, postalCode },
+      { name, phoneNumber, address, province, postalCode },
       { new: true }
     )
       .select("-password")

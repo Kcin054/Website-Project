@@ -1,0 +1,157 @@
+Folder PATH listing for volume Windows-SSD
+Volume serial number is 1ADD-91CD
+C:.
+�   project_structure.txt
+�   README.md
+�   
+?���client
+�   �   .env         
+�   ?���public
+�   ����src
+�       �   App.css
+�       �   App.js
+�       �   App.test.js
+�       �   index.css
+�       �   index.js
+�       �   logo.svg
+�       �   reportWebVitals.js
+�       �   setupTests.js
+�       �   
+�       ?���components
+�       �   �   AdminOrdersPage.js
+�       �   �   CartPage.js
+�       �   �   OrderConfirmationPage.js
+�       �   �   OrderHistoryPage.js
+�       �   �   PaymentPage.js
+�       �   �   ShippingInfoPage.js
+�       �   �   
+�       �   ����pages
+�       �       �   AccountPage.js
+�       �       �   Detail.css
+�       �       �   Detail.js
+�       �       �   FormEditBook.css
+�       �       �   FormEditBook.js
+�       �       �   HomePage.css
+�       �       �   PageBook.js
+�       �       �   PageEbook.js
+�       �       �   ProfilePage.js
+�       �       �   UsersManagementPage.js
+�       �       �   
+�       �       ?���admin
+�       �       �       CreatePage.js
+�       �       �       HomePage.css
+�       �       �       HomePageAdmin.js
+�       �       �       
+�       �       ����auth
+�       �               login.js
+�       �               Register.js
+�       �               
+�       ?���functions
+�       �       auth.js
+�       �       book.js
+�       �       cart.js
+�       �       order.js
+�       �       payment.js
+�       �       profile.js
+�       �       review.js
+�       �       shipping.js
+�       �       user.js
+�       �       
+�       ?���Layout
+�       �       HeaderBar.js
+�       �       SideBar.js
+�       �       
+�       ?���routes
+�       �       Routes.js
+�       �       
+�       ����store
+�               cartSlice.js
+�               store.js
+�               userSlice.js
+�               
+����server
+    �   .env
+    �   package-lock.json
+    �   package.json
+    �   server.js
+    �   
+    ?���Config
+    �       db.js
+    �       
+    ?���Controllers
+    �       auth.js
+    �       book.js
+    �       cart.js
+    �       order.js
+    �       payment.js
+    �       review.js
+    �       shipping.js
+    �       user.js
+    �       
+    ?���Middleware
+    �       auth.js
+    �       upload.js
+    �       uploadSlip.js
+    �       
+    ?���Models
+    �       Book.js
+    �       Cart.js
+    �       Order.js
+    �       Review.js
+    �       User.js
+    �       
+    ?���Routes
+    �       auth.js
+    �       book.js
+    �       cart.js
+    �       order.js
+    �       payment.js
+    �       review.js
+    �       shipping.js
+    �       user.js
+    �       
+    ����uploads
+        ?���images
+        �       file-1748419279090-65631740.jpg
+        �       file-1748420126068-499012218.png
+        �       file-1748420158244-50517802.png
+        �       file-1748420202150-731111381.jpg
+        �       file-1748420318877-803199767.jpg
+        �       file-1748420389098-179302943.jpg
+        �       file-1748420429535-738783985.jpg
+        �       file-1748422353052-429486259.png
+        �       file-1748422513906-491572930.png
+        �       file-1748422975674-645779932.jpg
+        �       file-1748423320276-164237093.png
+        �       file-1748423686417-506117890.jpg
+        �       file-1748424520413-698284632.jpg
+        �       file-1748424558779-17303016.jpg
+        �       file-1748425002159-459197374.jpg
+        �       file-1748428699992-440021517.jpg
+        �       file-1748434174396-761386619.jpg
+        �       
+        ?���pdfs
+        �       pdfFile-1748419279092-720202079.pdf
+        �       pdfFile-1748419869197-317180370.pdf
+        �       pdfFile-1748420429592-409700628.pdf
+        �       pdfFile-1748422353084-547519256.pdf
+        �       pdfFile-1748422513928-805756122.pdf
+        �       pdfFile-1748422975755-824528371.pdf
+        �       pdfFile-1748423320289-247521830.pdf
+        �       pdfFile-1748428700007-654566711.pdf
+        �       pdfFile-1748434174425-276428758.pdf
+        �       
+        ����slips
+                slip-1748427525012-612257083.jpg
+                slip-1748428176063-67412760.jpg
+                slip-1748428287990-883623841.jpg
+                slip-1748428462580-903527238.jpg
+                slip-1748428728665-894107485.png
+                slip-1748431135554-486293047.png
+                slip-1748431617229-633124747.jpg
+                slip-1748432015012-226731942.jpg
+                slip-1748432077124-929276808.jpg
+                slip-1748433953036-977513257.jpg
+                slip-1748434596415-905465292.png
+                slipFile-1748427822279-285776089.jpg
+                

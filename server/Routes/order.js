@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const orderController = require("../Controllers/order");
-const { auth, adminCheck, authMiddleware } = require("../Middleware/auth"); // สมมติว่ามีการยืนยันตัวตน
+const { auth, adminCheck, authMiddleware } = require("../Middleware/auth");
 
 router.post("/orders", authMiddleware, orderController.createOrder);
 router.get("/orders/user", authMiddleware, orderController.getUserOrders);
